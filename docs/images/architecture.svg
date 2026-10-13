@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="560" rx="14" fill="#0f141a"/>
+  <rect x="0.5" y="0.5" width="1279" height="559" rx="14" fill="none" stroke="#2a323d"/>
+  <text x="40" y="52" font-size="22" font-weight="700" fill="#f3f4f6">How Local RAG Assistant works</text>
+  <text x="40" y="78" font-size="14" fill="#9ca3af">Two flows, one machine: index a PDF once, then answer questions grounded in its own pages</text>
+
+  <!-- INGEST -->
+  <text x="40" y="118" font-size="13" font-weight="700" fill="#4ade80" letter-spacing="1">INGEST · ONCE PER UPLOAD</text>
+  <g font-size="15">
+    <rect x="40" y="130" width="250" height="110" rx="12" fill="#161c24" stroke="#2a323d"/>
+    <rect x="40" y="130" width="250" height="6" rx="3" fill="#38bdf8"/>
+    <text x="165" y="164" text-anchor="middle" font-weight="700" fill="#f3f4f6">1 · Upload &amp; Load</text>
+    <text x="165" y="192" text-anchor="middle" font-size="13" fill="#9ca3af">Streamlit file uploader</text>
+    <text x="165" y="214" text-anchor="middle" font-size="13" fill="#9ca3af">PyPDFLoader · one doc per page</text>
+
+    <rect x="340" y="130" width="250" height="110" rx="12" fill="#161c24" stroke="#2a323d"/>
+    <rect x="340" y="130" width="250" height="6" rx="3" fill="#a78bfa"/>
+    <text x="465" y="164" text-anchor="middle" font-weight="700" fill="#f3f4f6">2 · Split</text>
+    <text x="465" y="192" text-anchor="middle" font-size="13" fill="#9ca3af">RecursiveCharacterTextSplitter</text>
+    <text x="465" y="214" text-anchor="middle" font-size="13" fill="#9ca3af">1000 chars · 200 overlap</text>
+
+    <rect x="640" y="130" width="250" height="110" rx="12" fill="#161c24" stroke="#166534"/>
+    <rect x="640" y="130" width="250" height="6" rx="3" fill="#22c55e"/>
+    <text x="765" y="164" text-anchor="middle" font-weight="700" fill="#f3f4f6">3 · Embed</text>
+    <text x="765" y="192" text-anchor="middle" font-size="13" fill="#9ca3af">OllamaEmbeddings</text>
+    <text x="765" y="214" text-anchor="middle" font-size="13" fill="#9ca3af">nomic-embed-text (local)</text>
+
+    <rect x="940" y="130" width="300" height="110" rx="12" fill="#161c24" stroke="#2a323d"/>
+    <rect x="940" y="130" width="300" height="6" rx="3" fill="#ec4899"/>
+    <text x="1090" y="164" text-anchor="middle" font-weight="700" fill="#f3f4f6">4 · Store</text>
+    <text x="1090" y="192" text-anchor="middle" font-size="13" fill="#9ca3af">Chroma vector store</text>
+    <text x="1090" y="214" text-anchor="middle" font-size="13" fill="#9ca3af">as_retriever · top k = 3 chunks</text>
+  </g>
+  <g stroke="#4b5563" stroke-width="2" marker-end="url(#arr)">
+    <line x1="292" y1="185" x2="336" y2="185"/>
+    <line x1="592" y1="185" x2="636" y2="185"/>
+    <line x1="892" y1="185" x2="936" y2="185"/>
+  </g>
+
+  <!-- QUERY -->
+  <text x="40" y="288" font-size="13" font-weight="700" fill="#7dd3fc" letter-spacing="1">QUERY · EVERY QUESTION</text>
+  <g font-size="15">
+    <rect x="40" y="300" width="200" height="110" rx="12" fill="#161c24" stroke="#2a323d"/>
+    <rect x="40" y="300" width="200" height="6" rx="3" fill="#38bdf8"/>
+    <text x="140" y="334" text-anchor="middle" font-weight="700" fill="#f3f4f6">1 · Ask</text>
+    <text x="140" y="362" text-anchor="middle" font-size="13" fill="#9ca3af">st.chat_input</text>
+    <text x="140" y="384" text-anchor="middle" font-size="13" fill="#9ca3af">user question</text>
+
+    <rect x="280" y="300" width="220" height="110" rx="12" fill="#161c24" stroke="#2a323d"/>
+    <rect x="280" y="300" width="220" height="6" rx="3" fill="#ec4899"/>
+    <text x="390" y="334" text-anchor="middle" font-weight="700" fill="#f3f4f6">2 · Retrieve</text>
+    <text x="390" y="362" text-anchor="middle" font-size="13" fill="#9ca3af">Chroma similarity search</text>
+    <text x="390" y="384" text-anchor="middle" font-size="13" fill="#9ca3af">3 most relevant chunks</text>
+
+    <rect x="540" y="300" width="220" height="110" rx="12" fill="#161c24" stroke="#2a323d"/>
+    <rect x="540" y="300" width="220" height="6" rx="3" fill="#a78bfa"/>
+    <text x="650" y="334" text-anchor="middle" font-weight="700" fill="#f3f4f6">3 · LCEL Prompt</text>
+    <text x="650" y="362" text-anchor="middle" font-size="13" fill="#9ca3af">ChatPromptTemplate</text>
+    <text x="650" y="384" text-anchor="middle" font-size="13" fill="#9ca3af">{context} + {question}</text>
+
+    <rect x="800" y="300" width="200" height="110" rx="12" fill="#161c24" stroke="#166534"/>
+    <rect x="800" y="300" width="200" height="6" rx="3" fill="#22c55e"/>
+    <text x="900" y="334" text-anchor="middle" font-weight="700" fill="#f3f4f6">4 · Generate</text>
+    <text x="900" y="362" text-anchor="middle" font-size="13" fill="#9ca3af">Ollama · llama3.2</text>
+    <text x="900" y="384" text-anchor="middle" font-size="13" fill="#9ca3af">temperature 0</text>
+
+    <rect x="1040" y="300" width="200" height="110" rx="12" fill="#161c24" stroke="#2a323d"/>
+    <rect x="1040" y="300" width="200" height="6" rx="3" fill="#f59e0b"/>
+    <text x="1140" y="334" text-anchor="middle" font-weight="700" fill="#f3f4f6">5 · Answer</text>
+    <text x="1140" y="362" text-anchor="middle" font-size="13" fill="#9ca3af">StrOutputParser</text>
+    <text x="1140" y="384" text-anchor="middle" font-size="13" fill="#9ca3af">+ source chunks &amp; pages</text>
+  </g>
+  <g stroke="#4b5563" stroke-width="2" marker-end="url(#arr)">
+    <line x1="242" y1="355" x2="276" y2="355"/>
+    <line x1="502" y1="355" x2="536" y2="355"/>
+    <line x1="762" y1="355" x2="796" y2="355"/>
+    <line x1="1002" y1="355" x2="1036" y2="355"/>
+  </g>
+  <!-- store feeds retrieve -->
+  <path d="M1090 242 V266 H390 V296" fill="none" stroke="#4b5563" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arr)"/>
+  <rect x="610" y="256" width="200" height="20" rx="10" fill="#0f141a"/>
+  <text x="710" y="271" text-anchor="middle" font-size="12" fill="#6b7280">vectors queried at runtime</text>
+
+  <!-- stack strip -->
+  <rect x="40" y="440" width="1200" height="96" rx="12" fill="#121820" stroke="#2a323d" stroke-dasharray="6 6"/>
+  <text x="64" y="472" font-size="13" font-weight="700" fill="#9ca3af" letter-spacing="1">LOCAL STACK</text>
+  <g font-size="14" font-weight="600">
+    <rect x="64"  y="486" width="220" height="34" rx="8" fill="#1e2630"/><text x="174" y="508" text-anchor="middle" fill="#d1d5db">Python 3.11+</text>
+    <rect x="300" y="486" width="220" height="34" rx="8" fill="#1e2630"/><text x="410" y="508" text-anchor="middle" fill="#d1d5db">LangChain (LCEL)</text>
+    <rect x="536" y="486" width="220" height="34" rx="8" fill="#1e2630"/><text x="646" y="508" text-anchor="middle" fill="#d1d5db">Ollama runtime</text>
+    <rect x="772" y="486" width="220" height="34" rx="8" fill="#1e2630"/><text x="882" y="508" text-anchor="middle" fill="#d1d5db">ChromaDB</text>
+    <rect x="1008" y="486" width="208" height="34" rx="8" fill="#1e2630"/><text x="1112" y="508" text-anchor="middle" fill="#d1d5db">Streamlit UI</text>
+  </g>
+</svg>
