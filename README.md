@@ -45,4 +45,26 @@ A 100% local, private, and free Retrieval-Augmented Generation (RAG) application
 
 ### Prerequisites
 1. Install [Ollama](https://ollama.com/download) on your machine.
-2. Pull the required local models via your terminal:
+2. Pull the required local models:
+   ```bash
+   ollama pull llama3.2
+   ollama pull nomic-embed-text
+   ```
+
+### Installation
+```bash
+git clone https://github.com/tabhiabhishek/RAG-Assistant.git
+cd RAG-Assistant
+python -m venv venv
+venv\Scripts\activate        # Windows
+# source venv/bin/activate    # macOS / Linux
+pip install -r requirements.txt
+```
+
+### Run the app
+```bash
+streamlit run app.py
+```
+Then open http://localhost:8501 in your browser.
+
+Upload a PDF, wait for "PDF processed successfully!", then ask your questions.
