@@ -5,13 +5,13 @@ import os
 
 st.set_page_config(page_title="RAG Assistant", page_icon="📄")
 st.title("📄 Free RAG Document Assistant")
-st.markdown("Powered by Llama 3 (Groq) & Local Hugging Face Embeddings. Upload a PDF and ask questions!")
+st.markdown("Powered by Llama 3.2 & nomic-embed-text, running locally with Ollama. Upload a PDF and ask questions!")
 
 uploaded_file = st.file_uploader("Choose a PDF file", type="pdf")
 
 if uploaded_file is not None:
     if "rag_chain" not in st.session_state:
-        with st.spinner("Processing PDF and building knowledge graph... (First time may take a minute to download local models)"):
+        with st.spinner("Processing PDF and building the vector index... (the first run may take a minute)"):
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
                 tmp_file.write(uploaded_file.getvalue())
                 tmp_path = tmp_file.name
