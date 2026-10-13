@@ -5,3 +5,6 @@ __pycache__/
 chroma/
 .DS_Store
 Thumbs.db
+
+# Personal documents
+*.pdf
